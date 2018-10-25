@@ -28,7 +28,6 @@ export const quotes = {
   },
   effects: {
     async fetchQuotes() {
-      console.log('Fetching quotes...');
       this.onQuotesFetchStarted();
       try {
         const response = await axios.get('/quotes');
