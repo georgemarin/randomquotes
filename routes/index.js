@@ -4,7 +4,7 @@ const mongo = require('mongodb');
 const router = express.Router();
 
 /* GET home page. */
-router.get('/', (req, res) => {
+router.get('/express', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
