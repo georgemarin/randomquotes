@@ -30,7 +30,7 @@ export const quotes = {
     async fetchQuotes() {
       this.onQuotesFetchStarted();
       try {
-        const response = await axios.get('/quotes');
+        const response = await axios.get('/api/quotes');
         this.onQuotesFetched({ quotes: response.data.quotes });
       } catch (ex) {
         this.onQuotesError({ errorMessage: ex.response.data.errorMessage});
