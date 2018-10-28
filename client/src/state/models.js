@@ -38,7 +38,6 @@ export const quotes = {
         },
         async updateQuote(payload) {
             try {
-                console.log('p',payload.id,payload.quote);
                 await axios.put(`/api/quote/${payload.id}`, payload.quote);
                 console.log(`working...${payload.id}`);
             } catch (ex) {

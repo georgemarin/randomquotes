@@ -12,6 +12,10 @@ import {
 import {
   FavoriteBorder,
   Favorite,
+  ThumbUp,
+  ThumbDown,
+  ThumbDownOutlined,
+  ThumbUpOutlined,
   FormatQuote,
 } from '@material-ui/icons';
 import {
@@ -63,6 +67,7 @@ class SimpleCard extends React.Component {
     return {
       quote: this.getQuote(),
       likeIsChecked: false,
+      dislikeIsChecked: false,
     }
   };
 
@@ -75,14 +80,20 @@ class SimpleCard extends React.Component {
     let quote = JSON.parse(JSON.stringify(this.state.quote));
     quote.likes += 1;
     delete quote._id;
-    this.props.updateQuote({id,  quote: {quote}} );
+    this.props.updateQuote({id, quote: {quote}});
+  };
+
+  decrementLikes = (id) => {
+    let quote = JSON.parse(JSON.stringify(this.state.quote));
+    quote.likes += -1;
+    delete quote._id;
+    this.props.updateQuote({id, quote: {quote}});
   };
 
 
   render() {
-    const { classes } = this.props;
-    const { quote, likeIsChecked } = this.state;
-    console.log(quote);
+    const {classes} = this.props;
+    const {quote, likeIsChecked, dislikeIsChecked} = this.state;
     return (
       <Card className={classes.card} id="quote-box" style={{height: '50%', width: '45%'}}>
         <CardContent>
@@ -120,18 +131,30 @@ class SimpleCard extends React.Component {
           <div style={{width: '50%'}}>
             <Checkbox
               checked={this.state.likeIsChecked}
-              checkedIcon=< Favorite />
-              icon= <FavoriteBorder />
-              onChange={() => {
-                const flag = !likeIsChecked;
-                this.setState({likeIsChecked: flag })
-              }}
+              checkedIcon=<ThumbUp/>
+            icon= <ThumbUpOutlined/>
+            onChange={() => {
+            const flag = !likeIsChecked;
+            this.setState({likeIsChecked: flag, dislikeIsChecked: false})
+          }}
+            />
+            <Checkbox
+              checked={this.state.dislikeIsChecked}
+              checkedIcon=<ThumbDown/>
+            icon= <ThumbDownOutlined/>
+            onChange={() => {
+            const flag = !dislikeIsChecked;
+            this.setState({dislikeIsChecked: flag, likeIsChecked: false})
+          }}
             />
             {
               likeIsChecked
                 ? quote.likes + 1
-                : quote.likes
+                : (dislikeIsChecked
+                     ? quote.likes - 1
+                     : quote.likes)
             } likes
+
             <Button
               size="medium"
               id="new-quote"
@@ -140,6 +163,7 @@ class SimpleCard extends React.Component {
               variant="contained"
               onClick={() => {
                 if (likeIsChecked === true) this.incrementLikes(quote._id);
+                if (dislikeIsChecked === true) this.decrementLikes(quote._id);
                 this.setState(this.getInitialState);
               }}
             >
