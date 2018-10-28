@@ -106,23 +106,23 @@ class SimpleCard extends React.Component {
         </CardContent>
         <CardActions>
           <div style={{ width: '50%', display: 'flex' }}>
-            <FacebookShareButton quote={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
+            <FacebookShareButton quote={quote.quote} url="https://randomquotes2.herokuapp.com/">
               <FacebookIcon size={32} round={true} style={{float: 'left'}}/>
             </FacebookShareButton>
             <TwitterShareButton
               title={quote.quote}
               via={quote.author}
               hashtags={['quote']}
-              url="https://fathomless-brushlands-72371.herokuapp.com/">
+              url="https://randomquotes2.herokuapp.com/">
               <TwitterIcon size={32} round={true}/>
             </TwitterShareButton>
-            <LinkedinShareButton title={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
+            <LinkedinShareButton title={quote.quote} url="https://randomquotes2.herokuapp.com/">
               <LinkedinIcon size={32} round={true}/>
             </LinkedinShareButton>
-            <WhatsappShareButton title={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
+            <WhatsappShareButton title={quote.quote} url="https://randomquotes2.herokuapp.com/">
               <WhatsappIcon size={32} round={true}/>
             </WhatsappShareButton>
-            <EmailShareButton subject={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
+            <EmailShareButton subject={quote.quote} url="https://randomquotes2.herokuapp.com/">
               <EmailIcon size={32} round={true}/>
             </EmailShareButton>
           </div>
