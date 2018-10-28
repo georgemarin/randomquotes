@@ -34,8 +34,10 @@ class Main extends Component {
               alignItems="center"
             >
               <SimpleCard
-                quotes={this.props.quotes.quotes}
+                  quotes={this.props.quotes.quotes}
+                  updateQuote={this.props.quotesActions.updateQuote}
               />
+                {console.log(this.props.quotes.quotes)}
             </Grid>
           </div>
         </div>
