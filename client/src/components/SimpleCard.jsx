@@ -1,14 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import {
   Button,
   Card,
   CardActions,
   CardContent,
+  Checkbox,
   Typography,
 } from '@material-ui/core';
-import { FormatQuote } from '@material-ui/icons';
+import {
+  ThumbUp,
+  ThumbDown,
+  ThumbDownOutlined,
+  ThumbUpOutlined,
+  FormatQuote,
+} from '@material-ui/icons';
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -46,69 +53,117 @@ class SimpleCard extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     quotes: PropTypes.array.isRequired,
+    updateQuote: PropTypes.func.isRequired,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
-    this.state = {
-      quote: {},
-    };
+    this.state = this.getInitialState();
   }
 
-  componentDidMount () {
-    this.getQuote();
-  }
+  getInitialState = () => {
+    return {
+      quote: this.getQuote(),
+      likeIsChecked: false,
+      dislikeIsChecked: false,
+    }
+  };
 
   getQuote = () => {
-    const {quotes} = this.props;
-    const quote = quotes[ Math.random() * quotes.length | 0 ];
-    this.setState({quote});
+    const { quotes } = this.props;
+    return quotes[Math.random() * quotes.length | 0];
   };
 
-  render () {
-    const {classes} = this.props;
+  incrementLikes = (id) => {
+    let quote = JSON.parse(JSON.stringify(this.state.quote));
+    quote.likes += 1;
+    delete quote._id;
+    this.props.updateQuote({ id, quote: { quote } });
+  };
+
+  decrementLikes = (id) => {
+    let quote = JSON.parse(JSON.stringify(this.state.quote));
+    quote.likes -= 1;
+    delete quote._id;
+    this.props.updateQuote({ id, quote: { quote } });
+  };
+
+
+  render() {
+    const { classes } = this.props;
+    const { quote, likeIsChecked, dislikeIsChecked } = this.state;
     return (
-      <Card className={classes.card} id="quote-box" style={{height: '50%', width: '45%'}}>
+      <Card className={classes.card} id="quote-box" style={{ height: '50%', width: '45%' }}>
         <CardContent>
           <Typography variant="h5" component="h2" id="text">
             <FormatQuote/>
-            {this.state.quote.quote}
+            {quote.quote}
             <FormatQuote/>
           </Typography>
           <Typography className={classes.pos} color="textSecondary" id="author">
-            {this.state.quote.author}
+            {quote.author}
           </Typography>
         </CardContent>
         <CardActions>
-          <div style={{width: '50%', display: 'flex'}}>
-            <FacebookShareButton quote={this.state.quote.quote} url="http://www.google.ro">
+          <div style={{ width: '50%', display: 'flex' }}>
+            <FacebookShareButton quote={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
               <FacebookIcon size={32} round={true} style={{float: 'left'}}/>
             </FacebookShareButton>
             <TwitterShareButton
-              title={this.state.quote.quote}
-              via={this.state.quote.author}
-              hashtags={[ 'quote' ]}
-              url="http://www.google.ro">
-              <TwitterIcon size={32} round={true} />
+              title={quote.quote}
+              via={quote.author}
+              hashtags={['quote']}
+              url="https://fathomless-brushlands-72371.herokuapp.com/">
+              <TwitterIcon size={32} round={true}/>
             </TwitterShareButton>
-            <LinkedinShareButton title={this.state.quote.quote} url="http://www.google.ro">
-              <LinkedinIcon size={32} round={true} />
+            <LinkedinShareButton title={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
+              <LinkedinIcon size={32} round={true}/>
             </LinkedinShareButton>
-            <WhatsappShareButton title={this.state.quote.quote} url="http://www.google.ro">
-              <WhatsappIcon size={32} round={true} />
+            <WhatsappShareButton title={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
+              <WhatsappIcon size={32} round={true}/>
             </WhatsappShareButton>
-            <EmailShareButton subject={this.state.quote.quote} url="http://www.google.ro">
-              <EmailIcon size={32} round={true} />
+            <EmailShareButton subject={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
+              <EmailIcon size={32} round={true}/>
             </EmailShareButton>
           </div>
           <div style={{width: '50%'}}>
+            <Checkbox
+              checked={this.state.likeIsChecked}
+              checkedIcon=<ThumbUp/>
+            icon= <ThumbUpOutlined/>
+            onChange={() => {
+            const flag = !likeIsChecked;
+            this.setState({likeIsChecked: flag, dislikeIsChecked: false})
+          }}
+            />
+            <Checkbox
+              checked={this.state.dislikeIsChecked}
+              checkedIcon=<ThumbDown/>
+            icon= <ThumbDownOutlined/>
+            onChange={() => {
+            const flag = !dislikeIsChecked;
+            this.setState({dislikeIsChecked: flag, likeIsChecked: false})
+          }}
+            />
+            {
+              likeIsChecked
+                ? quote.likes + 1
+                : (dislikeIsChecked
+                     ? quote.likes - 1
+                     : quote.likes)
+            } likes
+
             <Button
               size="medium"
               id="new-quote"
               style={{float: 'right'}}
               color="primary"
               variant="contained"
-              onClick={this.getQuote}
+              onClick={() => {
+                if (likeIsChecked === true) this.incrementLikes(quote._id);
+                if (dislikeIsChecked === true) this.decrementLikes(quote._id);
+                this.setState(this.getInitialState);
+              }}
             >
               Next
             </Button>
