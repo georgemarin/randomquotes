@@ -6,9 +6,14 @@ import {
   Card,
   CardActions,
   CardContent,
+  Checkbox,
   Typography,
 } from '@material-ui/core';
-import {FormatQuote} from '@material-ui/icons';
+import {
+  FavoriteBorder,
+  Favorite,
+  FormatQuote,
+} from '@material-ui/icons';
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -21,7 +26,6 @@ import {
   WhatsappIcon,
   EmailIcon,
 } from 'react-share';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 
 const styles = {
   card: {
@@ -52,21 +56,19 @@ class SimpleCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      quote: {},
-      likeIsChecked: false,
-    };
+    this.state = this.getInitialState();
   }
 
-  componentDidMount() {
-    this.getQuote();
-  }
+  getInitialState = () => {
+    return {
+      quote: this.getQuote(),
+      likeIsChecked: false,
+    }
+  };
 
   getQuote = () => {
     const {quotes} = this.props;
-    const quote = quotes[Math.random() * quotes.length | 0];
-    this.setState({quote, likeIsChecked: false});
-
+    return quotes[Math.random() * quotes.length | 0];
   };
 
   incrementLikes = (id) => {
@@ -78,53 +80,57 @@ class SimpleCard extends React.Component {
 
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
+    const { quote, likeIsChecked } = this.state;
+    console.log(quote);
     return (
       <Card className={classes.card} id="quote-box" style={{height: '50%', width: '45%'}}>
         <CardContent>
           <Typography variant="h5" component="h2" id="text">
             <FormatQuote/>
-            {this.state.quote.quote}
+            {quote.quote}
             <FormatQuote/>
           </Typography>
           <Typography className={classes.pos} color="textSecondary" id="author">
-            {this.state.quote.author}
+            {quote.author}
           </Typography>
         </CardContent>
         <CardActions>
           <div style={{width: '50%', display: 'flex'}}>
-            <FacebookShareButton quote={this.state.quote.quote} url="http://www.google.ro">
+            <FacebookShareButton quote={quote.quote} url="http://www.google.ro">
               <FacebookIcon size={32} round={true} style={{float: 'left'}}/>
             </FacebookShareButton>
             <TwitterShareButton
-              title={this.state.quote.quote}
-              via={this.state.quote.author}
+              title={quote.quote}
+              via={quote.author}
               hashtags={['quote']}
               url="http://www.google.ro">
               <TwitterIcon size={32} round={true}/>
             </TwitterShareButton>
-            <LinkedinShareButton title={this.state.quote.quote} url="http://www.google.ro">
+            <LinkedinShareButton title={quote.quote} url="http://www.google.ro">
               <LinkedinIcon size={32} round={true}/>
             </LinkedinShareButton>
-            <WhatsappShareButton title={this.state.quote.quote} url="http://www.google.ro">
+            <WhatsappShareButton title={quote.quote} url="http://www.google.ro">
               <WhatsappIcon size={32} round={true}/>
             </WhatsappShareButton>
-            <EmailShareButton subject={this.state.quote.quote} url="http://www.google.ro">
+            <EmailShareButton subject={quote.quote} url="http://www.google.ro">
               <EmailIcon size={32} round={true}/>
             </EmailShareButton>
           </div>
           <div style={{width: '50%'}}>
-            Like
             <Checkbox
-              label={'likes'}
+              checked={this.state.likeIsChecked}
+              checkedIcon=< Favorite />
+              icon= <FavoriteBorder />
               onChange={() => {
-                this.setState({likeIsChecked: !this.state.likeIsChecked})
-              }}>
-            </Checkbox>
+                const flag = !likeIsChecked;
+                this.setState({likeIsChecked: flag })
+              }}
+            />
             {
-              this.state.likeIsChecked
-                ? this.state.quote.likes + 1
-                : this.state.quote.likes
+              likeIsChecked
+                ? quote.likes + 1
+                : quote.likes
             } likes
             <Button
               size="medium"
@@ -133,9 +139,8 @@ class SimpleCard extends React.Component {
               color="primary"
               variant="contained"
               onClick={() => {
-                if (this.state.likeIsChecked === true) this.incrementLikes(this.state.quote._id);
-                this.getQuote();
-
+                if (likeIsChecked === true) this.incrementLikes(quote._id);
+                this.setState(this.getInitialState);
               }}
             >
               Next
