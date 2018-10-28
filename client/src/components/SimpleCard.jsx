@@ -10,8 +10,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import {
-  FavoriteBorder,
-  Favorite,
   ThumbUp,
   ThumbDown,
   ThumbDownOutlined,
@@ -72,7 +70,7 @@ class SimpleCard extends React.Component {
   };
 
   getQuote = () => {
-    const {quotes} = this.props;
+    const { quotes } = this.props;
     return quotes[Math.random() * quotes.length | 0];
   };
 
@@ -80,22 +78,22 @@ class SimpleCard extends React.Component {
     let quote = JSON.parse(JSON.stringify(this.state.quote));
     quote.likes += 1;
     delete quote._id;
-    this.props.updateQuote({id, quote: {quote}});
+    this.props.updateQuote({ id, quote: { quote } });
   };
 
   decrementLikes = (id) => {
     let quote = JSON.parse(JSON.stringify(this.state.quote));
-    quote.likes += -1;
+    quote.likes -= 1;
     delete quote._id;
-    this.props.updateQuote({id, quote: {quote}});
+    this.props.updateQuote({ id, quote: { quote } });
   };
 
 
   render() {
-    const {classes} = this.props;
-    const {quote, likeIsChecked, dislikeIsChecked} = this.state;
+    const { classes } = this.props;
+    const { quote, likeIsChecked, dislikeIsChecked } = this.state;
     return (
-      <Card className={classes.card} id="quote-box" style={{height: '50%', width: '45%'}}>
+      <Card className={classes.card} id="quote-box" style={{ height: '50%', width: '45%' }}>
         <CardContent>
           <Typography variant="h5" component="h2" id="text">
             <FormatQuote/>
@@ -107,24 +105,24 @@ class SimpleCard extends React.Component {
           </Typography>
         </CardContent>
         <CardActions>
-          <div style={{width: '50%', display: 'flex'}}>
-            <FacebookShareButton quote={quote.quote} url="http://www.google.ro">
+          <div style={{ width: '50%', display: 'flex' }}>
+            <FacebookShareButton quote={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
               <FacebookIcon size={32} round={true} style={{float: 'left'}}/>
             </FacebookShareButton>
             <TwitterShareButton
               title={quote.quote}
               via={quote.author}
               hashtags={['quote']}
-              url="http://www.google.ro">
+              url="https://fathomless-brushlands-72371.herokuapp.com/">
               <TwitterIcon size={32} round={true}/>
             </TwitterShareButton>
-            <LinkedinShareButton title={quote.quote} url="http://www.google.ro">
+            <LinkedinShareButton title={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
               <LinkedinIcon size={32} round={true}/>
             </LinkedinShareButton>
-            <WhatsappShareButton title={quote.quote} url="http://www.google.ro">
+            <WhatsappShareButton title={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
               <WhatsappIcon size={32} round={true}/>
             </WhatsappShareButton>
-            <EmailShareButton subject={quote.quote} url="http://www.google.ro">
+            <EmailShareButton subject={quote.quote} url="https://fathomless-brushlands-72371.herokuapp.com/">
               <EmailIcon size={32} round={true}/>
             </EmailShareButton>
           </div>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from './index'
 
 export const quotes = {
     state: {
@@ -38,8 +39,10 @@ export const quotes = {
         },
         async updateQuote(payload) {
             try {
-                await axios.put(`/api/quote/${payload.id}`, payload.quote);
-                console.log(`working...${payload.id}`);
+              await axios.put(`/api/quote/${payload.id}`, payload.quote);
+              const newQuotes = store.getState().quotes.quotes.filter(quote => quote._id !== payload.id);
+              newQuotes.push(payload.quote.quote);
+              this.onQuotesFetched({ quotes: newQuotes });
             } catch (ex) {
                 this.onQuotesError({errorMessage: ex.response.data.errorMessage});
             }
