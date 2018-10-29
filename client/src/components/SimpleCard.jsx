@@ -30,6 +30,7 @@ import {
   WhatsappIcon,
   EmailIcon,
 } from 'react-share';
+import Grid from "@material-ui/core/Grid/Grid";
 
 const styles = {
   card: {
@@ -107,69 +108,71 @@ class SimpleCard extends React.Component {
           </Typography>
         </CardContent>
         <CardActions>
-          <div style={{width: '50%', display: 'flex'}}>
-            <FacebookShareButton quote={quote.quote} url="http://www.google.ro">
-              <FacebookIcon size={32} round={true} style={{float: 'left'}}/>
-            </FacebookShareButton>
-            <TwitterShareButton
-              title={quote.quote}
-              via={quote.author}
-              hashtags={['quote']}
-              url="http://www.google.ro">
-              <TwitterIcon size={32} round={true}/>
-            </TwitterShareButton>
-            <LinkedinShareButton title={quote.quote} url="http://www.google.ro">
-              <LinkedinIcon size={32} round={true}/>
-            </LinkedinShareButton>
-            <WhatsappShareButton title={quote.quote} url="http://www.google.ro">
-              <WhatsappIcon size={32} round={true}/>
-            </WhatsappShareButton>
-            <EmailShareButton subject={quote.quote} url="http://www.google.ro">
-              <EmailIcon size={32} round={true}/>
-            </EmailShareButton>
-          </div>
-          <div style={{width: '50%'}}>
-            <Checkbox
-              checked={this.state.likeIsChecked}
-              checkedIcon=<ThumbUp/>
-            icon= <ThumbUpOutlined/>
-            onChange={() => {
-            const flag = !likeIsChecked;
-            this.setState({likeIsChecked: flag, dislikeIsChecked: false})
-          }}
-            />
-            <Checkbox
-              checked={this.state.dislikeIsChecked}
-              checkedIcon=<ThumbDown/>
-            icon= <ThumbDownOutlined/>
-            onChange={() => {
-            const flag = !dislikeIsChecked;
-            this.setState({dislikeIsChecked: flag, likeIsChecked: false})
-          }}
-            />
-            {
-              likeIsChecked
-                ? quote.likes + 1
-                : (dislikeIsChecked
-                     ? quote.likes - 1
-                     : quote.likes)
-            } likes
+          <Grid container spacing={24}>
+            <Grid item xs={12} sm={12} md={6} lg={6} style={{display: "flex"}}>
+              <FacebookShareButton quote={quote.quote} url="http://www.google.ro">
+                <FacebookIcon size={32} round={true} style={{float: 'left'}}/>
+              </FacebookShareButton>
+              <TwitterShareButton
+                title={quote.quote}
+                via={quote.author}
+                hashtags={['quote']}
+                url="http://www.google.ro">
+                <TwitterIcon size={32} round={true}/>
+              </TwitterShareButton>
+              <LinkedinShareButton title={quote.quote} url="http://www.google.ro">
+                <LinkedinIcon size={32} round={true}/>
+              </LinkedinShareButton>
+              <WhatsappShareButton title={quote.quote} url="http://www.google.ro">
+                <WhatsappIcon size={32} round={true}/>
+              </WhatsappShareButton>
+              <EmailShareButton subject={quote.quote} url="http://www.google.ro">
+                <EmailIcon size={32} round={true}/>
+              </EmailShareButton>
+            </Grid>
+            <Grid item xs={12} sm={12} md={6} lg={6}>
+              <Checkbox
+                checked={this.state.likeIsChecked}
+                checkedIcon=<ThumbUp/>
+              icon= <ThumbUpOutlined/>
+              onChange={() => {
+              const flag = !likeIsChecked;
+              this.setState({likeIsChecked: flag, dislikeIsChecked: false})
+            }}
+              />
+              <Checkbox
+                checked={this.state.dislikeIsChecked}
+                checkedIcon=<ThumbDown/>
+              icon= <ThumbDownOutlined/>
+              onChange={() => {
+              const flag = !dislikeIsChecked;
+              this.setState({dislikeIsChecked: flag, likeIsChecked: false})
+            }}
+              />
+              {
+                likeIsChecked
+                  ? quote.likes + 1
+                  : (dislikeIsChecked
+                  ? quote.likes - 1
+                  : quote.likes)
+              } likes
 
-            <Button
-              size="medium"
-              id="new-quote"
-              style={{float: 'right'}}
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                if (likeIsChecked === true) this.incrementLikes(quote._id);
-                if (dislikeIsChecked === true) this.decrementLikes(quote._id);
-                this.setState(this.getInitialState);
-              }}
-            >
-              Next
-            </Button>
-          </div>
+              <Button
+                size="medium"
+                id="new-quote"
+                style={{float: 'right'}}
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                  if (likeIsChecked === true) this.incrementLikes(quote._id);
+                  if (dislikeIsChecked === true) this.decrementLikes(quote._id);
+                  this.setState(this.getInitialState);
+                }}
+              >
+                Next
+              </Button>
+            </Grid>
+          </Grid>
         </CardActions>
       </Card>
     );
