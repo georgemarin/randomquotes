@@ -18,7 +18,8 @@
     "http-errors": "~1.6.2",
     "mongodb": "^3.1.8",
     "morgan": "~1.9.0",
-    "promise-retry": "^1.1.1"
+    "promise-retry": "^1.1.1",
+    "react-spinners": "^0.4.7"
   },
   "devDependencies": {
     "concurrently": "^4.0.1",
