@@ -10,8 +10,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import {
-  ThumbUp,
-  ThumbDown,
   ThumbDownOutlined,
   ThumbUpOutlined,
   FormatQuote,
